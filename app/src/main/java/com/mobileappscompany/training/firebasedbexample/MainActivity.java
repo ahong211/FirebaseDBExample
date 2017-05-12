@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 contact = value;
-                textView.setText("Name: " + contact.getmName() + " Phone: " + contact.getmPhone());
+                textView.setText("Name: " + contact.getName() + " Phone: " + contact.getPhone());
 
                 Log.d(TAG, "Value is: " + value);
             }
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        myRef = database.getReference("message");
 
-        contact.setmName(editText.getText().toString());
-        contact.setmPhone(editText2.getText().toString());
+        contact.setName(editText.getText().toString());
+        contact.setPhone(editText2.getText().toString());
         myRef.setValue(contact);
     }
 }
