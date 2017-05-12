@@ -7,8 +7,23 @@ package com.mobileappscompany.training.firebasedbexample;
 public class Contact {
     private String mName;
     private String mPhone;
+    private String mKey;
 
     public Contact() {
+    }
+
+    public Contact(String name, String phone, String key) {
+        mName = name;
+        mPhone = phone;
+        mKey = key;
+    }
+
+    public String getKey() {
+        return mKey;
+    }
+
+    public void setKey(String key) {
+        mKey = key;
     }
 
     public Contact(String mName, String mPhone) {

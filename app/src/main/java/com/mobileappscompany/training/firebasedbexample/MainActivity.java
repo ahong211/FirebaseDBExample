@@ -13,14 +13,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.value;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MAC_TAG";
     EditText editText;
     EditText editText2;
     TextView textView;
+
+    List<Contact> contactList = new ArrayList<>();
     DatabaseReference myRef;
     Contact contact = new Contact();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +47,18 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Contact value = dataSnapshot.getValue(Contact.class);
-                if (value == null) {
-                    return;
+                //              Contact value = dataSnapshot.getValue(Contact.class);
+//                if (value == null) {
+//                    return;
+//                }
+
+                for (DataSnapshot dataSnap : dataSnapshot.getChildren()) {
+                    Contact value = dataSnapshot.getValue(Contact.class);
+                    contactList.add(value);
                 }
 
-                contact = value;
-                textView.setText("Name: " + contact.getName() + " Phone: " + contact.getPhone());
+                contact = contactList.get(0);
+                textView.setText(contact.getName() + " Phone: " + contact.getPhone());
 
                 Log.d(TAG, "Value is: " + value);
             }
@@ -65,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         contact.setName(editText.getText().toString());
         contact.setPhone(editText2.getText().toString());
-        myRef.setValue(contact);
+
+        String mKey = myRef.push().getKey();
+        contact.setKey(mKey);
+
+        myRef.child(mKey).setValue(contact);
     }
 }
