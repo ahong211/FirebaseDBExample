@@ -17,8 +17,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MAC_TAG";
     EditText editText;
+    EditText editText2;
     TextView textView;
     DatabaseReference myRef;
+    Contact contact = new Contact();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         editText = (EditText) findViewById(R.id.editText);
+        editText2 = (EditText) findViewById(R.id.editText2);
         textView = (TextView) findViewById(R.id.textView);
 
         myRef = FirebaseDatabase.getInstance().getReference("message");
@@ -36,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                textView.setText(value);
+                Contact value = dataSnapshot.getValue(Contact.class);
+                if (value == null) {
+                    return;
+                }
+
+                contact = value;
+                textView.setText("Name: " + contact.getmName() + " Phone: " + contact.getmPhone());
+
                 Log.d(TAG, "Value is: " + value);
             }
 
@@ -54,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        myRef = database.getReference("message");
 
-        myRef.setValue(editText.getText().toString());
+        contact.setmName(editText.getText().toString());
+        contact.setmPhone(editText2.getText().toString());
+        myRef.setValue(contact);
     }
 }
